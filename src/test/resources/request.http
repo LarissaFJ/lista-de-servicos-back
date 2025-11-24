@@ -1,0 +1,45 @@
+### 🚀 Base URL
+@baseUrl = http://localhost:8080/api/services
+@contentType = application/json
+
+### 🔍 1. Listar todos os serviços
+GET {{baseUrl}}
+Accept: application/json
+
+###
+
+### 🔎 2. Buscar serviço por ID
+GET {{baseUrl}}/1
+Accept: application/json
+
+###
+
+### ➕ 3. Criar novo serviço
+POST {{baseUrl}}
+Content-Type: {{contentType}}
+
+{
+  "nome": "Serviço de Teste",
+  "telefone": "51988887777",
+  "categoria": "EDUCACAO",
+  "descricao": "Serviço criado via IntelliJ HTTP Client"
+}
+
+###
+
+### ✏️ 4. Atualizar um serviço existente (altere o ID conforme necessário)
+PUT {{baseUrl}}/1
+Content-Type: {{contentType}}
+
+{
+  "nome": "Serviço Atualizado",
+  "telefone": "51999998888",
+  "categoria": "OUTROS_SERVICOS",
+  "descricao": "Descrição atualizada via IntelliJ"
+}
+
+###
+
+### ❌ 5. Deletar um serviço
+DELETE {{baseUrl}}/1
+Accept: application/json

@@ -7,10 +7,12 @@ import lista.servicos.api.dto.ServicoResponse;
 import lista.servicos.api.mapper.ServicoMapper;
 import lista.servicos.domain.ServicoCategoria;
 import lista.servicos.repo.ServicoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/services")
 @CrossOrigin(origins = "http://localhost:4200") // liberação pro Angular
@@ -55,7 +57,9 @@ public class ServicoController {
 
     @PostMapping
     public ServicoResponse create(@RequestBody @Valid ServicoRequest req) {
+        log.info("Criando serviço: {}", req);
         var saved = repo.save(ServicoMapper.toEntity(req));
+        log.info("Serviço criado: {}", saved);
         return ServicoMapper.toResponse(saved);
     }
 
