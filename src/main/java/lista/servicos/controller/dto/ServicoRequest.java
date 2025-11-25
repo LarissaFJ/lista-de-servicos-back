@@ -1,24 +1,28 @@
-package lista.servicos.api.dto;
+package lista.servicos.controller.dto;
 
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lista.servicos.domain.ServicoCategoria;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class ServicoResponse {
-    public Long id;
+public class ServicoRequest {
+    @NotBlank
+    @Size(max = 120)
     public String nome;
-    public String telefone;
-    public ServicoCategoria categoria;
-    public String descricao;
-    public OffsetDateTime criadoEm;
-}
 
+    @NotBlank @Pattern(regexp = "\\d{8,15}")
+    public String telefone;
+
+    public ServicoCategoria categoria;
+
+    @NotBlank @Size(max = 500)
+    public String descricao;
+}

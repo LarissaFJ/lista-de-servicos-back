@@ -1,8 +1,8 @@
-package lista.servicos.api.mapper;
+package lista.servicos.mapper;
 
 
-import lista.servicos.api.dto.ServicoRequest;
-import lista.servicos.api.dto.ServicoResponse;
+import lista.servicos.controller.dto.ServicoRequest;
+import lista.servicos.controller.dto.ServicoResponse;
 import lista.servicos.domain.Servico;
 
 public class ServicoMapper {
@@ -21,13 +21,13 @@ public class ServicoMapper {
         s.setDescricao(r.descricao);
     }
     public static ServicoResponse toResponse(Servico s) {
-        var out = new ServicoResponse();
-        out.id = s.getId();
-        out.nome = s.getNome();
-        out.telefone = s.getTelefone();
-        out.categoria = s.getCategoria();
-        out.descricao = s.getDescricao();
-        out.criadoEm = s.getCriadoEm();
-        return out;
+        return ServicoResponse.builder()
+                .id(s.getId())
+                .nome(s.getNome())
+                .telefone(s.getTelefone())
+                .categoria(s.getCategoria())
+                .descricao(s.getDescricao())
+                .criadoEm(s.getCriadoEm())
+                .build();
     }
 }

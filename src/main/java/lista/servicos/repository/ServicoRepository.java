@@ -1,4 +1,4 @@
-package lista.servicos.repo;
+package lista.servicos.repository;
 
 import lista.servicos.domain.Servico;
 import lista.servicos.domain.ServicoCategoria;
