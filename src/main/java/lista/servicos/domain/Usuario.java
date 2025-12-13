@@ -1,6 +1,7 @@
 package lista.servicos.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,24 +14,41 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class Usuario implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
-    
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
     
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    public Usuario(String username, String password, Role role) {
+    public Usuario(String username, String email, String password, Role role) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
     
     @Override

@@ -11,4 +11,6 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
     Page<Servico> findByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(String n, String d, Pageable pageable);
     Page<Servico> findByCategoriaAndNomeContainingIgnoreCaseOrCategoriaAndDescricaoContainingIgnoreCase(
             ServicoCategoria c1, String n, ServicoCategoria c2, String d, Pageable pageable);
+    Page<Servico> findByUsuarioEmail(String email, Pageable pageable);
+
 }

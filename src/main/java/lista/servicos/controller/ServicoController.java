@@ -4,14 +4,11 @@ package lista.servicos.controller;
 import jakarta.validation.Valid;
 import lista.servicos.controller.dto.ServicoRequest;
 import lista.servicos.controller.dto.ServicoResponse;
-import lista.servicos.mapper.ServicoMapper;
 import lista.servicos.domain.ServicoCategoria;
-import lista.servicos.repository.ServicoRepository;
 import lista.servicos.service.ServicoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ServicoController {
 
-    private final ServicoRepository repo;
     private final ServicoService service;
 
     @GetMapping
@@ -51,4 +47,13 @@ public class ServicoController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {service.delete(id);}
+
+    @GetMapping("/listMyServices")
+    public Page<ServicoResponse> myServices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return service.listMyServices(page, size);
+    }
+
 }

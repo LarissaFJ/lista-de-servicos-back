@@ -27,6 +27,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+        
+        // Pular autenticação para endpoints permitidos
+        if (path.startsWith("/auth/") || path.startsWith("/h2-console/") || path.startsWith("/h2/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
 
         String token = null;
