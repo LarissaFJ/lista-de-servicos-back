@@ -27,7 +27,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterRequest req) {
-        System.out.println("Username: " + req.getUsername());
         System.out.println("Email: " + req.getEmail());
         System.out.println("Password: " + req.getPassword());
         if (req.getEmail() == null || req.getEmail().isEmpty()) {
@@ -36,7 +35,7 @@ public class AuthController {
         if (usuarioRepository.findByEmail(req.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(RegisterResponse.builder().message("E-mail já está em uso").build());
         }
-        Usuario u = new Usuario(req.getUsername(), req.getEmail(), passwordEncoder.encode(req.getPassword()), Role.USER);
+        Usuario u = new Usuario(req.getEmail(), passwordEncoder.encode(req.getPassword()), Role.USER);
         usuarioRepository.save(u);
         return ResponseEntity.status(HttpStatus.CREATED)
                     .body(RegisterResponse.builder()
@@ -55,6 +54,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "E-mail ou senha inválidos"));
         }
         String token = jwtUtil.generateToken(u);
-        return ResponseEntity.ok(Map.of("token", token, "role", "ROLE_" + u.getRole().name(), "email", u.getEmail(), "username", u.getUsername()));
+        return ResponseEntity.ok(Map.of("token", token, "role", "ROLE_" + u.getRole().name(), "email", u.getEmail()));
     }
 }

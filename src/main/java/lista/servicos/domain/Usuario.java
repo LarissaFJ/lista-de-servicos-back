@@ -23,9 +23,6 @@ public class Usuario implements UserDetails {
     private Long id;
     
     @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -34,8 +31,7 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     
-    public Usuario(String username, String email, String password, Role role) {
-        this.username = username;
+    public Usuario(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;

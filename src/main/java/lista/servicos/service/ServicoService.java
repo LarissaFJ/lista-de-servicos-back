@@ -73,6 +73,8 @@ public class ServicoService {
     }
 
     // TODO : exigir autenticação como foi feito no criar
+
+
     public ServicoResponse update(Long id, ServicoRequest req) {
         log.info("Atualizando serviço: {}", req);
         var saved = servicoRepository.findById(id)
