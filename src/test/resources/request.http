@@ -43,3 +43,25 @@ Content-Type: {{contentType}}
 ### ❌ 5. Deletar um serviço
 DELETE {{baseUrl}}/1
 Accept: application/json
+
+### 👤 6. Registrar usuário admin
+POST http://localhost:8080/auth/register?role=ADMIN
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "password": "admin123"
+}
+
+###
+
+### 🔐 7. Login admin
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@admin.com",
+  "password": "admin123"
+}
+
+###

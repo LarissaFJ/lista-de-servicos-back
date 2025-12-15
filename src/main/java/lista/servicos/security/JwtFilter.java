@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
-                            userDetails.getUsername(), //método do SpringSecurity, mas esta usando o email
+                            userDetails.getUsername(),
                             null,
                             userDetails.getAuthorities()
                     );

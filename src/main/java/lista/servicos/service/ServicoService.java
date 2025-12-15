@@ -72,12 +72,12 @@ public class ServicoService {
                 .map(ServicoMapper::toResponse);
     }
 
-    // TODO : exigir autenticação como foi feito no criar
-
-
     public ServicoResponse update(Long id, ServicoRequest req) {
         log.info("Atualizando serviço: {}", req);
-        var saved = servicoRepository.findById(id)
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        Servico saved = servicoRepository.findByIdAndUsuarioEmail(id, email)
                 .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id %s".formatted(id)));
         ServicoMapper.copyToEntity(req, saved);
         servicoRepository.save(saved);
@@ -85,17 +85,16 @@ public class ServicoService {
         return ServicoMapper.toResponse(saved);
     }
 
-    // TODO : exigir autenticação como foi feito no criar
     public ServicoResponse delete(Long id) {
         log.info("Deletando serviço: {}", id);
-        var saved = servicoRepository.findById(id)
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        var saved = servicoRepository.findByIdAndUsuarioEmail(id, email)
                 .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id %s".formatted(id)));
         servicoRepository.delete(saved);
         log.info("Serviço deletado: {}", saved);
         return ServicoMapper.toResponse(saved);
     }
 
-    // TODO : exigir autenticação como foi feito no criar
     public Page<ServicoResponse> listMyServices(int page, int size) {
         var pageable = PageRequest.of(page, size);
 
@@ -103,5 +102,13 @@ public class ServicoService {
 
         return servicoRepository.findByUsuarioEmail(email, pageable)
                 .map(ServicoMapper::toResponse);
+    }
+
+    public ServicoResponse deleteAdmin(Long id) {
+        var saved = servicoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id %s".formatted(id)));
+
+        servicoRepository.delete(saved);
+        return ServicoMapper.toResponse(saved);
     }
 }
