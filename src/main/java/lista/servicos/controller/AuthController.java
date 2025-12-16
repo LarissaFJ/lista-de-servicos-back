@@ -1,9 +1,7 @@
 package lista.servicos.controller;
 
 import jakarta.validation.Valid;
-import lista.servicos.controller.dto.LoginRequest;
-import lista.servicos.controller.dto.RegisterRequest;
-import lista.servicos.controller.dto.RegisterResponse;
+import lista.servicos.controller.dto.*;
 import lista.servicos.domain.Role;
 import lista.servicos.domain.Usuario;
 import lista.servicos.repository.UsuarioRepository;
@@ -49,17 +47,45 @@ public class AuthController {
         }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest req) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest req) {
         log.info("Logando usuário: {}", req);
         var opt = usuarioRepository.findByEmail(req.getEmail());
         if (opt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "E-mail ou senha inválidos"));
+            log.error("Usuário não encontrado: {}", req.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(LoginResponse.builder().message("Usuário não encontrado").build());
         }
         Usuario u = opt.get();
         if (!passwordEncoder.matches(req.getPassword(), u.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "E-mail ou senha inválidos"));
+            log.error("Email e senha inválidos: {}", req.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(LoginResponse.builder().message("E-mail e senha inválidoo").build());
         }
         String token = jwtUtil.generateToken(u);
-        return ResponseEntity.ok(Map.of("token", token, "role", "ROLE_" + u.getRole().name(), "email", u.getEmail()));
+        return ResponseEntity.ok(LoginResponse.builder()
+                .message("Login realizado com sucesso")
+                .token(token)
+                .role("ROLE_" + u.getRole().name())
+                .email(u.getEmail())
+                .build());
     }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordRequest req) {
+
+        var usuarioOpt = usuarioRepository.findByEmail(req.email());
+
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "E-mail não encontrado"));
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        usuario.setPassword(passwordEncoder.encode(req.newPassword()));
+
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok(
+                Map.of("message", "Senha atualizada com sucesso")
+        );
+    }
+
 }
