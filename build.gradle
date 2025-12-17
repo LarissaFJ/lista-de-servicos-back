@@ -27,10 +27,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 
-    runtimeOnly("com.h2database:h2") // DEV
-
-    // Postgres (prod) – opcional
-    // runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2") //application
+    runtimeOnly("org.postgresql:postgresql") //application-dev// DEV
 
     // Lombok
     compileOnly("org.projectlombok:lombok")

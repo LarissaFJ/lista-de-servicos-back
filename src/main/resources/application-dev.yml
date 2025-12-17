@@ -1,0 +1,16 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+        username: ${PGUSER}
+        password: ${PGPASSWORD}
+        driver-class-name: org.postgresql.Driver
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+jwt:
+    secret: ${JWT_SECRET:1234567890123456789012345678901234567890123456789012345678901234}
+    expiration: ${JWT_EXPIRATION:3600000}
