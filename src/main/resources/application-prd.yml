@@ -1,0 +1,23 @@
+#spring:
+##    datasource:
+##        url: jdbc:postgresql://turntable.proxy.rlwy.net:38790/railway
+##        username: postgres
+##        password: orBYQcPxlNdpDyIdTtDuHuiefLFndwPt
+##        driver-class-name: org.postgresql.Driver
+
+spring:
+    datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+        driver-class-name: org.postgresql.Driver
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION:3600000}
