@@ -2,6 +2,7 @@ package lista.servicos.security;
 
 import lista.servicos.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,9 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+
+    @Value("${cors.allowed-origins}")
+    private String allowedOrigins;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -64,7 +68,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin("https://listadeservicos.netlify.app/");
+        config.addAllowedOrigin(allowedOrigins);
         config.addAllowedMethod("*"); // GET, POST, PUT, DELETE, OPTIONS
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
